@@ -20,36 +20,46 @@ namespace CalculadoraDinamica
     /// </summary>
     public partial class MainWindow : Window
     {
+        
+
         public MainWindow()
         {
             InitializeComponent();
-            int numeroFilas = gridPrincipal.RowDefinitions.Count - 1;
-            int numeroColumnas = gridPrincipal.ColumnDefinitions.Count - 1;
-            int contador = 0;
-            for (int fila = 0; fila < numeroFilas; fila++)
+            CrearBotonesCalculadora();
+        }
+        private void CrearBotonesCalculadora()
+        {
+            for (int fila = 1; fila < 4; fila++)
             {
-                for (int columnas = 0; columnas < numeroColumnas; columnas++)
+                for (int columna = 0; columna < 3; columna++)
                 {
+                    //Calculamos el número correspondiente a este botón
+                    int n = (fila - 1) * 3 + columna + 1;
+
+                    //Creamos y configuramos el botón
                     Button boton = new Button();
-                    Grid.SetRow(boton, fila);
-                    Grid.SetColumn(boton, columnas);
+                    Grid.SetRow(boton, fila - 1);
+                    Grid.SetColumn(boton, columna);
                     boton.Margin = new Thickness(5);
-                    boton.Click += Button_Click;
-                    boton.Tag = contador++;
-                    TextBlock numeroBoton = new TextBlock();
-                    numeroBoton.Text = contador.ToString();
-                    Viewbox viewBox = new Viewbox();
-                    viewBox.Child = numeroBoton;
-                    boton.Content = viewBox;
+                    boton.Tag = n;
+
+                    //Creamos y configuramos el contenido del botón
+                    TextBlock texto = new TextBlock();
+                    texto.Text = n.ToString();
+                    Viewbox box = new Viewbox();
+                    box.Child = texto;
+                    boton.Content = box;
+
+                    //Introducimos el botón en el Grid
                     gridPrincipal.Children.Add(boton);
                 }
-                
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            Button boton = (Button)sender;
+            textBlockPantalla.Text += boton.Tag.ToString();
         }
     }
 }
